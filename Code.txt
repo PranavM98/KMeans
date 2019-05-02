@@ -15,14 +15,14 @@ sns.scatterplot(x="Annual Income (k$)",y="Spending Score (1-100)",hue="Gender", 
 sns.scatterplot(x="Age",y="Spending Score (1-100)",hue="Gender", data=df)
 sns.scatterplot(x="Age",y="Annual Income (k$)",hue="Gender", data=df)
 
-from sklearn.model_selection import cross_val_score, train_test_split, GridSearchCV
+#importing the KMeans module from sklearn library
 from sklearn.cluster import KMeans
 
 X_k = df['Annual Income (k$)'].values
 y_k = df['Spending Score (1-100)'].values
 X_k1 = df[['Annual Income (k$)' , 'Spending Score (1-100)']].iloc[: , :].values
 
-
+#Cluster Evaluation. Using Elbow Method
 model1=KMeans()
 model1.fit(X_k1)
 from yellowbrick.cluster import KElbowVisualizer
@@ -31,28 +31,25 @@ elbow.fit(X_k1)
 elbow.poof()
 
 
-
-model = KMeans(n_clusters=17)
-model.fit(X_k1)
-
-y_kmeans = model.fit_predict(X_k1)
-
-labels=set(model.labels_)
-print(labels)
-for c in labels:
-    plt.scatter(X_k1[model.labels_ == c,0],
+#Plotting KMeans for k=1,2,3,4,5
+for i in range (1,5)
+    model = KMeans(n_clusters=5)
+    model.fit(X_k1)
+    
+    y_kmeans = model.fit_predict(X_k1)
+    labels=set(model.labels_)
+    #print(labels)
+    for c in labels:
+        plt.scatter(X_k1[model.labels_ == c,0],
                X_k1[model.labels_ == c,1],
                label='Cluster {}'.format(c))
 
 
-plt.xlabel('Annual Income')
-plt.ylabel('Spending Score')
-
-plt.show()
-
-
-centroids = model.cluster_centers_
-print(centroids)
+        plt.xlabel('Annual Income')
+        plt.ylabel('Spending Score')
+        plt.show()
+        centroids = model.cluster_centers_
+        print(centroids)
 
 
 
